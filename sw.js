@@ -1,5 +1,5 @@
-const CACHE = 'att-sm-v3';
-const HTML = './directorio_ATT.html';
+const CACHE = 'att-sm-v4';
+const HTML  = './directorio_ATT.html';
 const ASSETS = [HTML, './manifest.json'];
 
 self.addEventListener('install', e => {
@@ -19,9 +19,13 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   const isHTML = url.pathname.endsWith('.html') || url.pathname.endsWith('/');
+  const isSB   = url.hostname.endsWith('.supabase.co');
+
+  // Supabase API: network-only; si falla, la app usa localStorage como caché
+  if (isSB) return;
 
   if (isHTML) {
-    // Network-first: siempre intenta la red para mostrar cambios al instante
+    // HTML: network-first para recibir actualizaciones al instante
     e.respondWith(
       fetch(e.request)
         .then(res => {
@@ -32,7 +36,7 @@ self.addEventListener('fetch', e => {
         .catch(() => caches.match(HTML))
     );
   } else {
-    // Cache-first para assets (fuentes, imágenes)
+    // Assets (fuentes, imágenes): cache-first
     e.respondWith(
       caches.match(e.request).then(cached => cached || fetch(e.request))
     );
