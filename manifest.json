@@ -2,7 +2,7 @@
   "name": "Directorio ATT-SM 2026",
   "short_name": "ATT-SM 2026",
   "description": "Aulas Técnicas y Tecnológicas · Fundación Carlos F. Novella",
-  "start_url": "./directorio_ATT.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2C7A2C",

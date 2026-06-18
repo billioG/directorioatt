@@ -814,7 +814,7 @@ function openEditModal(id) {
   const t = d.tutores || [];
   const h = d.horario || {};
 
-  function esc(s){ return String(s==null?"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
   function fld(label, name, val, type) {
     type = type || "text";
     return "<div class=\"edit-field\"><label>"+label+"</label><input type=\""+type+"\" name=\""+name+"\" value=\""+esc(val)+"\"></div>";

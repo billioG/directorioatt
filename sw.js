@@ -1,5 +1,5 @@
 const CACHE = 'att-sm-v4';
-const HTML  = './directorio_ATT.html';
+const HTML  = './index.html';
 const ASSETS = [HTML, './manifest.json'];
 
 self.addEventListener('install', e => {
