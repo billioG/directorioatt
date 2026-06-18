@@ -1,0 +1,24 @@
+{
+  "name": "Directorio ATT-SM 2026",
+  "short_name": "ATT-SM 2026",
+  "description": "Aulas Técnicas y Tecnológicas · Fundación Carlos F. Novella",
+  "start_url": "./directorio_ATT.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2C7A2C",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%232C7A2C' rx='24'/%3E%3Cpolygon points='96,28 162,152 30,152' fill='white' opacity='0.15'/%3E%3Crect x='44' y='60' width='104' height='18' rx='4' fill='white'/%3E%3Crect x='54' y='86' width='84' height='18' rx='4' fill='white'/%3E%3Crect x='64' y='112' width='64' height='18' rx='4' fill='white'/%3E%3Crect x='74' y='138' width='44' height='18' rx='4' fill='white'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%232C7A2C' rx='64'/%3E%3Cpolygon points='256,74 432,404 80,404' fill='white' opacity='0.15'/%3E%3Crect x='116' y='158' width='280' height='48' rx='10' fill='white'/%3E%3Crect x='144' y='228' width='224' height='48' rx='10' fill='white'/%3E%3Crect x='172' y='298' width='168' height='48' rx='10' fill='white'/%3E%3Crect x='200' y='368' width='112' height='48' rx='10' fill='white'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
