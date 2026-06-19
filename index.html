@@ -172,12 +172,70 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .tutor-card-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .tutor-card-header i{font-size:18px;color:var(--green)}
 .tutor-card-header span{font-size:13px;font-weight:700;color:var(--green)}
-.tutor-item{background:#fff;border-radius:8px;padding:10px 12px;margin-bottom:6px;border:1px solid #c8e6c9}
+.tutor-item{background:#fff;border-radius:8px;padding:10px 12px;margin-bottom:6px;border:1px solid #c8e6c9;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .tutor-item:last-child{margin-bottom:0}
-.tutor-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.tutor-item-body{flex:1;min-width:0}
+.tutor-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.tutor-name:hover{color:var(--green)}
 .tutor-contact{display:flex;flex-wrap:wrap;gap:10px;margin-top:5px}
 .tutor-contact a{font-size:12px;color:var(--blue);text-decoration:none;display:flex;align-items:center;gap:4px}
 .tutor-contact a:hover{text-decoration:underline}
+.btn-eval-tutor{display:none;background:#0f4c91;color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;align-items:center;gap:4px}
+body.coord-mode .btn-eval-tutor{display:flex}
+/* Coord bar */
+#coord-bar{display:none;position:fixed;top:0;left:0;right:0;z-index:10000;background:#0f4c91;color:#fff;padding:10px 20px;font-size:13px;font-weight:700;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+#coord-bar.on{display:flex}
+body.coord-mode #screen-dir{padding-top:44px}
+body.coord-mode .detail-header{top:44px}
+/* Tutor detail popup */
+#tutor-popup{display:none;position:fixed;inset:0;z-index:10500;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px}
+#tutor-popup.open{display:flex}
+.tutor-popup-inner{background:#fff;border-radius:16px;width:100%;max-width:420px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.tutor-popup-header{background:linear-gradient(135deg,#0f4c91,#1a6fc4);color:#fff;padding:20px;display:flex;align-items:center;gap:14px}
+.tutor-popup-avatar{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.tutor-popup-body{padding:18px 20px}
+.tutor-info-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f3f4f6}
+.tutor-info-row:last-child{border-bottom:none}
+.tutor-info-row i{font-size:16px;color:#6b7280;margin-top:1px;flex-shrink:0}
+.tutor-info-label{font-size:11px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.tutor-info-val{font-size:13px;color:#1a2332;font-weight:500;margin-top:2px}
+.tutor-popup-footer{padding:14px 20px;border-top:1px solid #e5e7eb;display:flex;gap:8px;justify-content:flex-end}
+.btn-eval-open{background:#0f4c91;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px}
+/* Evaluacion COVEC modal */
+#eval-modal{display:none;position:fixed;inset:0;z-index:10600;background:rgba(0,0,0,.6);align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto}
+#eval-modal.open{display:flex}
+.eval-inner{background:#fff;border-radius:16px;width:100%;max-width:560px;margin:auto;overflow:hidden}
+.eval-header{background:linear-gradient(135deg,#0f4c91,#1a6fc4);color:#fff;padding:18px 20px;display:flex;align-items:center;justify-content:space-between}
+.eval-header h3{font-size:16px;font-weight:700;margin:0}
+.eval-header p{font-size:12px;opacity:.8;margin:3px 0 0}
+.eval-close{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:18px;line-height:1}
+.eval-section{padding:16px 20px;border-bottom:1px solid #f0f0f0}
+.eval-section:last-child{border-bottom:none}
+.eval-dimension{margin-bottom:14px}
+.eval-dimension-label{font-size:12px;font-weight:700;color:#374151;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.eval-dimension-label i{color:#0f4c91;font-size:15px}
+.eval-stars{display:flex;gap:4px;margin-bottom:4px}
+.eval-star{font-size:26px;cursor:pointer;color:#d1d5db;transition:color .1s;user-select:none}
+.eval-star.active{color:#f59e0b}
+.eval-star:hover,.eval-star:hover~.eval-star{color:#d1d5db}
+.eval-stars:hover .eval-star{color:#f59e0b}
+.eval-stars .eval-star:hover~.eval-star{color:#d1d5db}
+.eval-star-label{font-size:11px;color:#9ca3af;min-height:16px}
+.eval-comment{width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;resize:vertical;min-height:60px;box-sizing:border-box;margin-top:6px}
+.eval-comment:focus{outline:none;border-color:#0f4c91}
+.eval-footer{padding:14px 20px;border-top:1.5px solid #e5e7eb;display:flex;gap:10px;align-items:center}
+.eval-save-status{flex:1;font-size:12px;color:#2C7A2C}
+.btn-save-eval{background:#0f4c91;color:#fff;border:none;border-radius:8px;padding:11px 20px;font-size:14px;font-weight:700;cursor:pointer}
+.btn-cancel-eval{background:#f3f4f6;color:#374151;border:none;border-radius:8px;padding:11px 16px;font-size:13px;cursor:pointer}
+.covec-badge{display:inline-flex;align-items:center;gap:4px;background:#e8f0fe;color:#0f4c91;border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;letter-spacing:.3px}
+/* Historial de evaluaciones en ficha */
+.eval-history{margin-top:8px}
+.eval-history-item{background:#f8faff;border:1px solid #dbeafe;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:12px}
+.eval-history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.eval-history-date{color:#6b7280;font-size:11px}
+.eval-score-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.eval-score-item{display:flex;justify-content:space-between;color:#374151}
+.eval-score-item b{color:#0f4c91}
 .schedule-card{background:var(--blue-light);border:1.5px solid #93c5fd;border-radius:10px;padding:14px;margin-bottom:14px}
 .schedule-card-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .schedule-card-header i{font-size:18px;color:var(--blue)}
@@ -429,6 +487,8 @@ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const CACHE_KEY = 'att_sm_data_v1';
 let DATA = [];
 let sbToken = null;
+let sbUserEmail = '';
+let coordMode = false;
 
 const AV_COLORS={"av-blue":"background:linear-gradient(135deg,#1a6fc4,#2d8ee8)","av-green":"background:linear-gradient(135deg,#2e7d32,#43a047)","av-amber":"background:linear-gradient(135deg,#e65100,#f57c00)"};
 const SECTOR_CLASSES={EP:"badge-ep",SJ:"badge-sj",SDX:"badge-sdx",LP:"badge-lp",CH:"badge-ch"};
@@ -488,7 +548,7 @@ function mapRow(row) {
     apoyoDoc: row.apoyo_doc !== undefined ? row.apoyo_doc : null,
     apoyoEst: row.apoyo_est !== undefined ? row.apoyo_est : null,
     tutores: (row.tutores || []).sort(function(a,b){ return (a.orden||0)-(b.orden||0); }).map(function(t){
-      return { nombre: t.nombre, tel: t.tel, email: t.email };
+      return { nombre: t.nombre, tel: t.tel, email: t.email, sector: t.sector||'', inicioLabores: t.inicio_labores||'' };
     }),
     horario: h ? { dias: h.dias, horas: h.horas, inicio: h.inicio, fin: h.fin, demostracion: h.demostracion } : {}
   };
@@ -577,8 +637,10 @@ async function doLogin() {
     var data = await r.json();
     if (!r.ok) throw new Error(data.error_description || data.msg || "Credenciales incorrectas");
     sbToken = data.access_token;
+    var role = (data.user && data.user.user_metadata && data.user.user_metadata.role) || 'admin';
+    sbUserEmail = (data.user && data.user.email) || '';
     closeLoginModal();
-    enterAdmin();
+    if (role === 'coordinador') enterCoord(); else enterAdmin();
   } catch(e) {
     errEl.textContent = e.message;
     btn.disabled = false;
@@ -644,15 +706,27 @@ function openDetail(id){
   let tutHtml='';
   if(d.tutores&&d.tutores.length){
     tutHtml=`<div class="tutor-card"><div class="tutor-card-header"><i class="ti ti-user-check"></i><span>Tutor${d.tutores.length>1?'es':''} ATT asignado${d.tutores.length>1?'s':''}</span></div>`;
-    d.tutores.forEach(t=>{
-      tutHtml+=`<div class="tutor-item"><div class="tutor-name"><i class="ti ti-user" style="font-size:13px;color:var(--green-mid);margin-right:4px"></i>${t.nombre}</div>`;
+    window._tutorMap = window._tutorMap || {};
+    d.tutores.forEach((t,ti)=>{
+      const key = d.id+'_'+ti;
+      window._tutorMap[key] = {tutor: t, estId: d.id};
+      tutHtml+=`<div class="tutor-item">
+        <div class="tutor-item-body">
+          <div class="tutor-name" onclick="openTutorPopupByKey('${key}')">
+            <i class="ti ti-user" style="font-size:13px;color:var(--green-mid)"></i>${t.nombre}
+            <i class="ti ti-info-circle" style="font-size:12px;color:#9ca3af"></i>
+          </div>`;
       if(t.tel||t.email){
         tutHtml+='<div class="tutor-contact">';
         if(t.tel)tutHtml+=`<a href="tel:${t.tel.replace(/[^0-9]/g,'')}"><i class="ti ti-phone"></i>${t.tel}</a>`;
         if(t.email)tutHtml+=`<a href="mailto:${t.email}"><i class="ti ti-mail"></i>${t.email}</a>`;
         tutHtml+='</div>';
       }
-      tutHtml+='</div>';
+      tutHtml+=`</div>
+        <button class="btn-eval-tutor" onclick="openTutorPopupByKey('${key}')">
+          <i class="ti ti-clipboard-check"></i> Evaluar
+        </button>
+      </div>`;
     });
     tutHtml+='</div>';
   }
@@ -782,6 +856,59 @@ function dismissIos(){
   <span class="admin-bar-label"><span class="admin-dot"></span>MODO EDICIÓN</span>
   <span id="admin-save-status" style="font-size:12px;opacity:.8"></span>
   <button class="btn-admin-exit" onclick="logoutAdmin()">✕ Cerrar sesión</button>
+</div>
+
+<div id="coord-bar">
+  <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;background:#60a5fa;border-radius:50%;display:inline-block"></span>MODO COORDINADOR</span>
+  <span id="coord-user-label" style="font-size:11px;opacity:.7;flex:1"></span>
+  <button class="btn-admin-exit" onclick="logoutCoord()">✕ Cerrar sesión</button>
+</div>
+
+<!-- Tutor detail popup -->
+<div id="tutor-popup">
+  <div class="tutor-popup-inner">
+    <div class="tutor-popup-header">
+      <div class="tutor-popup-avatar"><i class="ti ti-user"></i></div>
+      <div>
+        <div style="font-size:16px;font-weight:700" id="tp-nombre"></div>
+        <div style="font-size:12px;opacity:.8;margin-top:3px" id="tp-sector"></div>
+      </div>
+    </div>
+    <div class="tutor-popup-body">
+      <div class="tutor-info-row"><i class="ti ti-phone"></i><div><div class="tutor-info-label">Teléfono</div><div class="tutor-info-val" id="tp-tel"></div></div></div>
+      <div class="tutor-info-row"><i class="ti ti-mail"></i><div><div class="tutor-info-label">Correo electrónico</div><div class="tutor-info-val" id="tp-email"></div></div></div>
+      <div class="tutor-info-row"><i class="ti ti-calendar-event"></i><div><div class="tutor-info-label">Inicio de labores en 1bot</div><div class="tutor-info-val" id="tp-inicio"></div></div></div>
+      <div id="tp-eval-history" class="eval-history"></div>
+    </div>
+    <div class="tutor-popup-footer">
+      <button class="btn-cancel-eval" onclick="closeTutorPopup()">Cerrar</button>
+      <button class="btn-eval-open" id="btn-abrir-eval" onclick="openEvalFromPopup()" style="display:none"><i class="ti ti-clipboard-check"></i> Evaluar (COVEC)</button>
+    </div>
+  </div>
+</div>
+
+<!-- Evaluación COVEC modal -->
+<div id="eval-modal">
+  <div class="eval-inner">
+    <div class="eval-header">
+      <div>
+        <h3 id="eval-modal-title">Evaluación COVEC</h3>
+        <p id="eval-modal-sub"></p>
+      </div>
+      <button class="eval-close" onclick="closeEvalModal()">×</button>
+    </div>
+    <div style="padding:14px 20px;background:#f0f4ff;border-bottom:1px solid #dbeafe">
+      <span class="covec-badge"><i class="ti ti-shield-check"></i> Código de Valores, Ética y Conducta · Fundación Carlos F. Novella</span>
+    </div>
+    <div id="eval-body">
+      <!-- Generado por JS -->
+    </div>
+    <div class="eval-footer">
+      <span class="eval-save-status" id="eval-save-status"></span>
+      <button class="btn-cancel-eval" onclick="closeEvalModal()">Cancelar</button>
+      <button class="btn-save-eval" onclick="saveEvaluation()">Guardar evaluación</button>
+    </div>
+  </div>
 </div>
 
 <!-- Edit modal -->
@@ -979,7 +1106,173 @@ function saveEdit() {
 
 function logoutAdmin() {
   sbToken = null;
+  sbUserEmail = '';
   exitAdmin();
+}
+
+/* ── Coordinador ─────────────────────────────── */
+function enterCoord() {
+  coordMode = true;
+  document.body.classList.add('coord-mode');
+  document.getElementById('coord-bar').classList.add('on');
+  var lbl = document.getElementById('coord-user-label');
+  if(lbl) lbl.textContent = sbUserEmail;
+}
+function exitCoord() {
+  coordMode = false;
+  document.body.classList.remove('coord-mode');
+  document.getElementById('coord-bar').classList.remove('on');
+}
+function logoutCoord() {
+  sbToken = null;
+  sbUserEmail = '';
+  exitCoord();
+}
+
+/* ── Tutor popup ─────────────────────────────── */
+var currentTutorData = null;
+var currentTutorEstId = null;
+
+function openTutorPopupByKey(key) {
+  var entry = window._tutorMap && window._tutorMap[key];
+  if(!entry) return;
+  openTutorPopup(entry.tutor, entry.estId);
+}
+function openTutorPopup(tutor, estId) {
+  currentTutorData = tutor;
+  currentTutorEstId = estId;
+  document.getElementById('tp-nombre').textContent = tutor.nombre || '—';
+  document.getElementById('tp-sector').textContent = tutor.sector ? 'Sector ' + tutor.sector : '';
+  document.getElementById('tp-tel').textContent = tutor.tel || '—';
+  document.getElementById('tp-email').textContent = tutor.email || '—';
+  document.getElementById('tp-inicio').textContent = tutor.inicioLabores || '—';
+  var evalBtn = document.getElementById('btn-abrir-eval');
+  evalBtn.style.display = coordMode ? 'flex' : 'none';
+  var hist = document.getElementById('tp-eval-history');
+  hist.innerHTML = '<div style="font-size:11px;color:#9ca3af;padding:6px 0">Cargando evaluaciones...</div>';
+  document.getElementById('tutor-popup').classList.add('open');
+  if(sbToken) loadTutorEvals(tutor.nombre, estId, hist);
+  else hist.innerHTML = '';
+}
+function closeTutorPopup() {
+  document.getElementById('tutor-popup').classList.remove('open');
+}
+
+async function loadTutorEvals(nombre, estId, container) {
+  try {
+    var rows = await sbFetch('/rest/v1/evaluaciones?tutor_nombre=eq.' + encodeURIComponent(nombre) + '&establecimiento_id=eq.' + estId + '&order=fecha.desc&limit=5');
+    if(!rows || !rows.length){ container.innerHTML = '<div style="font-size:12px;color:#9ca3af;padding:4px 0">Sin evaluaciones previas.</div>'; return; }
+    var LABELS = ['—','Insuficiente','Regular','Bueno','Muy bueno','Excelente'];
+    var html = '<div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:6px;margin-top:10px">Evaluaciones anteriores</div>';
+    rows.forEach(function(r){
+      var fecha = new Date(r.fecha).toLocaleDateString('es-GT',{day:'2-digit',month:'short',year:'numeric'});
+      var prom = r.total ? parseFloat(r.total).toFixed(1) : '—';
+      html += '<div class="eval-history-item">'
+        + '<div class="eval-history-header"><span style="font-weight:700;color:#0f4c91">Promedio: ' + prom + '/5</span><span class="eval-history-date">' + fecha + '</span></div>'
+        + '<div class="eval-score-grid">'
+        + '<div class="eval-score-item"><span>Ética</span><b>' + (r.etica_score||'—') + '/5</b></div>'
+        + '<div class="eval-score-item"><span>Liderazgo</span><b>' + (r.liderazgo_score||'—') + '/5</b></div>'
+        + '<div class="eval-score-item"><span>Solidaridad</span><b>' + (r.solidaridad_score||'—') + '/5</b></div>'
+        + '<div class="eval-score-item"><span>Sostenibilidad</span><b>' + (r.sostenibilidad_score||'—') + '/5</b></div>'
+        + '</div>'
+        + (r.comentarios ? '<div style="font-size:11px;color:#6b7280;margin-top:6px;font-style:italic">"' + r.comentarios + '"</div>' : '')
+        + '</div>';
+    });
+    container.innerHTML = html;
+  } catch(e) { container.innerHTML = ''; }
+}
+
+/* ── Evaluación COVEC ────────────────────────── */
+var evalScores = { etica:0, liderazgo:0, solidaridad:0, sostenibilidad:0 };
+
+var COVEC_DIMS = [
+  { key:'etica', icon:'ti-shield-check', label:'Comportamiento Ético',
+    desc:'Actúa con honestidad, transparencia e integridad en todas sus acciones.' },
+  { key:'liderazgo', icon:'ti-star', label:'Liderazgo Genuino',
+    desc:'Guía con el ejemplo, respeta la dignidad de las personas y promueve su desarrollo integral.' },
+  { key:'solidaridad', icon:'ti-heart-handshake', label:'Solidaridad',
+    desc:'Construye relaciones de confianza y actúa como puente de apoyo en la comunidad educativa.' },
+  { key:'sostenibilidad', icon:'ti-leaf', label:'Compromiso con la Sostenibilidad',
+    desc:'Trabaja orientado a crear impacto positivo y fortalecer el tejido social y comunitario.' }
+];
+
+var STAR_LABELS = ['','Insuficiente','Regular','Bueno','Muy bueno','Excelente'];
+
+function buildEvalBody() {
+  evalScores = { etica:0, liderazgo:0, solidaridad:0, sostenibilidad:0 };
+  var html = '';
+  COVEC_DIMS.forEach(function(dim){
+    html += '<div class="eval-section"><div class="eval-dimension">'
+      + '<div class="eval-dimension-label"><i class="ti ' + dim.icon + '"></i>' + dim.label + '</div>'
+      + '<div style="font-size:12px;color:#6b7280;margin-bottom:8px">' + dim.desc + '</div>'
+      + '<div class="eval-stars" data-dim="' + dim.key + '">';
+    for(var s=1;s<=5;s++){
+      html += '<span class="eval-star" data-val="' + s + '" onclick="setScore(\'' + dim.key + '\',' + s + ')">★</span>';
+    }
+    html += '</div><div class="eval-star-label" id="lbl-' + dim.key + '">Selecciona una calificación</div></div></div>';
+  });
+  html += '<div class="eval-section"><div class="eval-dimension">'
+    + '<div class="eval-dimension-label"><i class="ti ti-message-dots"></i>Observaciones generales</div>'
+    + '<textarea class="eval-comment" id="eval-comentarios" placeholder="Comentarios sobre el desempeño del tutor..."></textarea>'
+    + '</div></div>';
+  return html;
+}
+
+function setScore(dim, val) {
+  evalScores[dim] = val;
+  var container = document.querySelector('.eval-stars[data-dim="' + dim + '"]');
+  if(container) {
+    container.querySelectorAll('.eval-star').forEach(function(s,i){
+      s.classList.toggle('active', i < val);
+    });
+  }
+  var lbl = document.getElementById('lbl-' + dim);
+  if(lbl) lbl.textContent = '★'.repeat(val) + ' ' + STAR_LABELS[val];
+}
+
+function openEvalFromPopup() {
+  if(!currentTutorData) return;
+  var nombre = currentTutorData.nombre;
+  document.getElementById('eval-modal-title').textContent = 'Evaluación COVEC';
+  document.getElementById('eval-modal-sub').textContent = nombre;
+  document.getElementById('eval-body').innerHTML = buildEvalBody();
+  document.getElementById('eval-save-status').textContent = '';
+  closeTutorPopup();
+  document.getElementById('eval-modal').classList.add('open');
+}
+function closeEvalModal() {
+  document.getElementById('eval-modal').classList.remove('open');
+}
+
+async function saveEvaluation() {
+  if(!currentTutorData) return;
+  var dims = ['etica','liderazgo','solidaridad','sostenibilidad'];
+  for(var i=0;i<dims.length;i++){
+    if(!evalScores[dims[i]]){
+      document.getElementById('eval-save-status').style.color='#dc2626';
+      document.getElementById('eval-save-status').textContent='Califica todas las dimensiones (1-5 estrellas).';
+      return;
+    }
+  }
+  var payload = {
+    tutor_nombre: currentTutorData.nombre,
+    establecimiento_id: currentTutorEstId,
+    evaluado_por: sbUserEmail,
+    etica_score: evalScores.etica,
+    liderazgo_score: evalScores.liderazgo,
+    solidaridad_score: evalScores.solidaridad,
+    sostenibilidad_score: evalScores.sostenibilidad,
+    comentarios: (document.getElementById('eval-comentarios')||{}).value || null
+  };
+  var st = document.getElementById('eval-save-status');
+  st.style.color='#6b7280'; st.textContent='Guardando...';
+  try {
+    await sbFetch('/rest/v1/evaluaciones', { method:'POST', headers:{'Prefer':'return=minimal'}, body: JSON.stringify(payload) });
+    st.style.color='#2C7A2C'; st.textContent='✓ Evaluación guardada correctamente';
+    setTimeout(function(){ closeEvalModal(); }, 1800);
+  } catch(e) {
+    st.style.color='#dc2626'; st.textContent='Error: ' + e.message;
+  }
 }
 </script>
 
@@ -988,8 +1281,8 @@ function logoutAdmin() {
 <div id="login-modal">
   <div class="login-inner">
     <div class="login-header">
-      <h3>Acceso Administrador</h3>
-      <p>Directorio ATT-SM 2026</p>
+      <h3>Acceso al sistema</h3>
+      <p>Directorio ATT-SM 2026 · Admin / Coordinador</p>
     </div>
     <div class="login-body">
       <div class="login-field">
