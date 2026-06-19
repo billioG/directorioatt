@@ -181,7 +181,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .tutor-contact a{font-size:12px;color:var(--blue);text-decoration:none;display:flex;align-items:center;gap:4px}
 .tutor-contact a:hover{text-decoration:underline}
 .btn-eval-tutor{display:none;background:#0f4c91;color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;align-items:center;gap:4px}
-body.coord-mode .btn-eval-tutor{display:flex}
+body.coord-mode .btn-eval-tutor,body.admin-mode .btn-eval-tutor{display:flex}
 /* Coord bar */
 #coord-bar{display:none;position:fixed;top:0;left:0;right:0;z-index:10000;background:#0f4c91;color:#fff;padding:10px 20px;font-size:13px;font-weight:700;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.3)}
 #coord-bar.on{display:flex}
@@ -190,7 +190,7 @@ body.coord-mode .detail-header{top:44px}
 /* Tutor detail popup */
 #tutor-popup{display:none;position:fixed;inset:0;z-index:10500;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px}
 #tutor-popup.open{display:flex}
-.tutor-popup-inner{background:#fff;border-radius:16px;width:100%;max-width:420px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.tutor-popup-inner{background:#fff;border-radius:16px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
 .tutor-popup-header{background:linear-gradient(135deg,#0f4c91,#1a6fc4);color:#fff;padding:20px;display:flex;align-items:center;gap:14px}
 .tutor-popup-avatar{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .tutor-popup-body{padding:18px 20px}
@@ -548,7 +548,14 @@ function mapRow(row) {
     apoyoDoc: row.apoyo_doc !== undefined ? row.apoyo_doc : null,
     apoyoEst: row.apoyo_est !== undefined ? row.apoyo_est : null,
     tutores: (row.tutores || []).sort(function(a,b){ return (a.orden||0)-(b.orden||0); }).map(function(t){
-      return { nombre: t.nombre, tel: t.tel, email: t.email, sector: t.sector||'', inicioLabores: t.inicio_labores||'' };
+      return {
+        nombre: t.nombre, nombres: t.nombres||'', apellidos: t.apellidos||'',
+        tel: t.tel, email: t.email, sector: t.sector||'',
+        inicioLabores: t.inicio_labores||'', direccion: t.direccion||'',
+        cumple: t.cumple||'', edad: t.edad||'', dpi: t.dpi||'',
+        compania: t.compania||'', programa: t.programa||'',
+        cvLink: t.cv_link||'', renasLink: t.renas_link||'', tallaPolo: t.talla_polo||''
+      };
     }),
     horario: h ? { dias: h.dias, horas: h.horas, inicio: h.inicio, fin: h.fin, demostracion: h.demostracion } : {}
   };
@@ -875,14 +882,20 @@ function dismissIos(){
       </div>
     </div>
     <div class="tutor-popup-body">
+      <div class="tutor-info-row"><i class="ti ti-calendar-plus"></i><div><div class="tutor-info-label">Inicio de labores en 1bot</div><div class="tutor-info-val" id="tp-inicio"></div></div></div>
+      <div class="tutor-info-row"><i class="ti ti-map-pin"></i><div><div class="tutor-info-label">Dirección</div><div class="tutor-info-val" id="tp-direccion"></div></div></div>
       <div class="tutor-info-row"><i class="ti ti-phone"></i><div><div class="tutor-info-label">Teléfono</div><div class="tutor-info-val" id="tp-tel"></div></div></div>
+      <div class="tutor-info-row"><i class="ti ti-building"></i><div><div class="tutor-info-label">Compañía</div><div class="tutor-info-val" id="tp-compania"></div></div></div>
       <div class="tutor-info-row"><i class="ti ti-mail"></i><div><div class="tutor-info-label">Correo electrónico</div><div class="tutor-info-val" id="tp-email"></div></div></div>
-      <div class="tutor-info-row"><i class="ti ti-calendar-event"></i><div><div class="tutor-info-label">Inicio de labores en 1bot</div><div class="tutor-info-val" id="tp-inicio"></div></div></div>
+      <div class="tutor-info-row"><i class="ti ti-school"></i><div><div class="tutor-info-label">Programa</div><div class="tutor-info-val" id="tp-programa"></div></div></div>
+      <div class="tutor-info-row"><i class="ti ti-cake"></i><div><div class="tutor-info-label">Cumpleaños · Edad</div><div class="tutor-info-val" id="tp-cumple"></div></div></div>
+      <div class="tutor-info-row"><i class="ti ti-id-badge"></i><div><div class="tutor-info-label">DPI</div><div class="tutor-info-val" id="tp-dpi"></div></div></div>
+      <div class="tutor-info-row" id="tp-docs-row" style="display:none"><i class="ti ti-files"></i><div><div class="tutor-info-label">Documentos</div><div class="tutor-info-val" id="tp-docs"></div></div></div>
       <div id="tp-eval-history" class="eval-history"></div>
     </div>
     <div class="tutor-popup-footer">
       <button class="btn-cancel-eval" onclick="closeTutorPopup()">Cerrar</button>
-      <button class="btn-eval-open" id="btn-abrir-eval" onclick="openEvalFromPopup()" style="display:none"><i class="ti ti-clipboard-check"></i> Evaluar (COVEC)</button>
+      <button class="btn-eval-open" id="btn-abrir-eval" onclick="openEvalFromPopup()" style="display:none"><i class="ti ti-clipboard-check"></i> Evaluar</button>
     </div>
   </div>
 </div>
@@ -897,8 +910,10 @@ function dismissIos(){
       </div>
       <button class="eval-close" onclick="closeEvalModal()">×</button>
     </div>
-    <div style="padding:14px 20px;background:#f0f4ff;border-bottom:1px solid #dbeafe">
-      <span class="covec-badge"><i class="ti ti-shield-check"></i> Código de Valores, Ética y Conducta · Fundación Carlos F. Novella</span>
+    <div style="padding:10px 20px;background:#f0f4ff;border-bottom:1px solid #dbeafe;display:flex;gap:8px;flex-wrap:wrap">
+      <span class="covec-badge"><i class="ti ti-shield-check"></i> COVEC · 4 dimensiones</span>
+      <span class="covec-badge" style="background:#e8f5e9;color:#2C7A2C"><i class="ti ti-atom"></i> STEAM · 5 dimensiones</span>
+      <span style="font-size:11px;color:#6b7280;align-self:center">Promedio sobre 5 estrellas</span>
     </div>
     <div id="eval-body">
       <!-- Generado por JS -->
@@ -1141,18 +1156,33 @@ function openTutorPopupByKey(key) {
 function openTutorPopup(tutor, estId) {
   currentTutorData = tutor;
   currentTutorEstId = estId;
-  document.getElementById('tp-nombre').textContent = tutor.nombre || '—';
-  document.getElementById('tp-sector').textContent = tutor.sector ? 'Sector ' + tutor.sector : '';
-  document.getElementById('tp-tel').textContent = tutor.tel || '—';
-  document.getElementById('tp-email').textContent = tutor.email || '—';
+  var fullName = tutor.nombre || ((tutor.nombres||'') + ' ' + (tutor.apellidos||'')).trim() || '—';
+  document.getElementById('tp-nombre').textContent = fullName;
+  document.getElementById('tp-sector').textContent = tutor.sector ? 'Sector ' + tutor.sector : (tutor.programa || '');
   document.getElementById('tp-inicio').textContent = tutor.inicioLabores || '—';
-  var evalBtn = document.getElementById('btn-abrir-eval');
-  evalBtn.style.display = coordMode ? 'flex' : 'none';
+  document.getElementById('tp-direccion').textContent = tutor.direccion || '—';
+  document.getElementById('tp-tel').textContent = tutor.tel || '—';
+  document.getElementById('tp-compania').textContent = tutor.compania || '—';
+  document.getElementById('tp-email').textContent = tutor.email || '—';
+  document.getElementById('tp-programa').textContent = tutor.programa || '—';
+  var cumpleStr = tutor.cumple || '—';
+  if(tutor.edad) cumpleStr += ' · ' + tutor.edad + ' años';
+  document.getElementById('tp-cumple').textContent = cumpleStr;
+  document.getElementById('tp-dpi').textContent = tutor.dpi || '—';
+  // Documentos (CV, RENAS)
+  var docsRow = document.getElementById('tp-docs-row');
+  var docsEl = document.getElementById('tp-docs');
+  var docs = [];
+  if(tutor.cvLink) docs.push('<a href="'+tutor.cvLink+'" target="_blank" style="color:#0f4c91;text-decoration:none;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-file-text"></i>CV</a>');
+  if(tutor.renasLink) docs.push('<a href="'+tutor.renasLink+'" target="_blank" style="color:#0f4c91;text-decoration:none;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-file-certificate"></i>RENAS</a>');
+  if(docs.length){ docsEl.innerHTML = '<div style="display:flex;gap:12px">'+docs.join('')+'</div>'; docsRow.style.display='flex'; }
+  else docsRow.style.display = 'none';
+  var canEval = adminMode || coordMode;
+  document.getElementById('btn-abrir-eval').style.display = canEval ? 'flex' : 'none';
   var hist = document.getElementById('tp-eval-history');
-  hist.innerHTML = '<div style="font-size:11px;color:#9ca3af;padding:6px 0">Cargando evaluaciones...</div>';
+  hist.innerHTML = sbToken ? '<div style="font-size:11px;color:#9ca3af;padding:6px 0">Cargando evaluaciones...</div>' : '';
   document.getElementById('tutor-popup').classList.add('open');
   if(sbToken) loadTutorEvals(tutor.nombre, estId, hist);
-  else hist.innerHTML = '';
 }
 function closeTutorPopup() {
   document.getElementById('tutor-popup').classList.remove('open');
@@ -1166,16 +1196,28 @@ async function loadTutorEvals(nombre, estId, container) {
     var html = '<div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:6px;margin-top:10px">Evaluaciones anteriores</div>';
     rows.forEach(function(r){
       var fecha = new Date(r.fecha).toLocaleDateString('es-GT',{day:'2-digit',month:'short',year:'numeric'});
-      var prom = r.total ? parseFloat(r.total).toFixed(1) : '—';
+      var prom = r.total ? parseFloat(r.total).toFixed(2) : '—';
+      var stars = r.total ? '★'.repeat(Math.round(parseFloat(r.total))) : '';
       html += '<div class="eval-history-item">'
-        + '<div class="eval-history-header"><span style="font-weight:700;color:#0f4c91">Promedio: ' + prom + '/5</span><span class="eval-history-date">' + fecha + '</span></div>'
+        + '<div class="eval-history-header">'
+        + '<span style="font-weight:700;color:#0f4c91">' + prom + '/5 <span style="color:#f59e0b;font-size:13px">' + stars + '</span></span>'
+        + '<span class="eval-history-date">' + fecha + ' · ' + r.evaluado_por + '</span></div>'
+        + '<div style="font-size:10px;font-weight:700;color:#9ca3af;margin:6px 0 3px">COVEC</div>'
         + '<div class="eval-score-grid">'
         + '<div class="eval-score-item"><span>Ética</span><b>' + (r.etica_score||'—') + '/5</b></div>'
         + '<div class="eval-score-item"><span>Liderazgo</span><b>' + (r.liderazgo_score||'—') + '/5</b></div>'
         + '<div class="eval-score-item"><span>Solidaridad</span><b>' + (r.solidaridad_score||'—') + '/5</b></div>'
         + '<div class="eval-score-item"><span>Sostenibilidad</span><b>' + (r.sostenibilidad_score||'—') + '/5</b></div>'
         + '</div>'
-        + (r.comentarios ? '<div style="font-size:11px;color:#6b7280;margin-top:6px;font-style:italic">"' + r.comentarios + '"</div>' : '')
+        + '<div style="font-size:10px;font-weight:700;color:#9ca3af;margin:6px 0 3px">STEAM</div>'
+        + '<div class="eval-score-grid">'
+        + '<div class="eval-score-item"><span>Contenido</span><b>' + (r.contenido_score||'—') + '/5</b></div>'
+        + '<div class="eval-score-item"><span>Metodología</span><b>' + (r.metodologia_score||'—') + '/5</b></div>'
+        + '<div class="eval-score-item"><span>Gestión aula</span><b>' + (r.gestion_score||'—') + '/5</b></div>'
+        + '<div class="eval-score-item"><span>Inclusión</span><b>' + (r.inclusion_score||'—') + '/5</b></div>'
+        + '<div class="eval-score-item"><span>Planificación</span><b>' + (r.planificacion_score||'—') + '/5</b></div>'
+        + '</div>'
+        + (r.comentarios ? '<div style="font-size:11px;color:#6b7280;margin-top:6px;font-style:italic;border-top:1px solid #e5e7eb;padding-top:6px">"' + r.comentarios + '"</div>' : '')
         + '</div>';
     });
     container.innerHTML = html;
@@ -1186,22 +1228,38 @@ async function loadTutorEvals(nombre, estId, container) {
 var evalScores = { etica:0, liderazgo:0, solidaridad:0, sostenibilidad:0 };
 
 var COVEC_DIMS = [
+  { section:'COVEC — Código de Valores, Ética y Conducta · Fundación Carlos F. Novella' },
   { key:'etica', icon:'ti-shield-check', label:'Comportamiento Ético',
-    desc:'Actúa con honestidad, transparencia e integridad en todas sus acciones.' },
-  { key:'liderazgo', icon:'ti-star', label:'Liderazgo Genuino',
-    desc:'Guía con el ejemplo, respeta la dignidad de las personas y promueve su desarrollo integral.' },
+    desc:'Actúa con honestidad, transparencia e integridad en todas sus interacciones con el establecimiento, docentes y estudiantes.' },
+  { key:'liderazgo', icon:'ti-crown', label:'Liderazgo Genuino',
+    desc:'Guía con el ejemplo, es referente positivo, respeta la dignidad de todos los actores y promueve su desarrollo integral.' },
   { key:'solidaridad', icon:'ti-heart-handshake', label:'Solidaridad',
-    desc:'Construye relaciones de confianza y actúa como puente de apoyo en la comunidad educativa.' },
+    desc:'Construye relaciones de confianza, actúa como puente de apoyo y fortalece los vínculos con la comunidad educativa.' },
   { key:'sostenibilidad', icon:'ti-leaf', label:'Compromiso con la Sostenibilidad',
-    desc:'Trabaja orientado a crear impacto positivo y fortalecer el tejido social y comunitario.' }
+    desc:'Trabaja orientado a crear impacto positivo duradero y contribuye a fortalecer el tejido social y comunitario.' },
+  { section:'Desempeño STEAM — Programa 1bot' },
+  { key:'contenido', icon:'ti-device-laptop', label:'Dominio del Contenido y Tecnología',
+    desc:'Conoce y maneja con solvencia los temas STEAM y las herramientas del programa (tablets, plataforma 1bot, robótica).' },
+  { key:'metodologia', icon:'ti-bulb', label:'Metodología Activa',
+    desc:'Usa aprendizaje basado en proyectos, pensamiento computacional, experimentación y fomenta la creatividad.' },
+  { key:'gestion', icon:'ti-layout-grid', label:'Gestión del Aula y del Tiempo',
+    desc:'Organiza bien las sesiones, aprovecha el tiempo efectivamente y mantiene un ambiente ordenado y participativo.' },
+  { key:'inclusion', icon:'ti-users', label:'Inclusión y Equidad de Género',
+    desc:'Atiende las necesidades de todos los estudiantes y promueve activamente la participación de niñas en STEAM.' },
+  { key:'planificacion', icon:'ti-clipboard-list', label:'Planificación y Seguimiento',
+    desc:'Llega preparado a las sesiones, tiene plan de clase y lleva registro del progreso de los estudiantes.' }
 ];
 
 var STAR_LABELS = ['','Insuficiente','Regular','Bueno','Muy bueno','Excelente'];
 
 function buildEvalBody() {
-  evalScores = { etica:0, liderazgo:0, solidaridad:0, sostenibilidad:0 };
+  evalScores = { etica:0, liderazgo:0, solidaridad:0, sostenibilidad:0, contenido:0, metodologia:0, gestion:0, inclusion:0, planificacion:0 };
   var html = '';
   COVEC_DIMS.forEach(function(dim){
+    if(dim.section){
+      html += '<div style="padding:10px 20px 6px;background:#f8f9fa;border-bottom:1px solid #e5e7eb;border-top:1px solid #e5e7eb;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px">' + dim.section + '</div>';
+      return;
+    }
     html += '<div class="eval-section"><div class="eval-dimension">'
       + '<div class="eval-dimension-label"><i class="ti ' + dim.icon + '"></i>' + dim.label + '</div>'
       + '<div style="font-size:12px;color:#6b7280;margin-bottom:8px">' + dim.desc + '</div>'
@@ -1213,7 +1271,7 @@ function buildEvalBody() {
   });
   html += '<div class="eval-section"><div class="eval-dimension">'
     + '<div class="eval-dimension-label"><i class="ti ti-message-dots"></i>Observaciones generales</div>'
-    + '<textarea class="eval-comment" id="eval-comentarios" placeholder="Comentarios sobre el desempeño del tutor..."></textarea>'
+    + '<textarea class="eval-comment" id="eval-comentarios" placeholder="Fortalezas, áreas de mejora y comentarios sobre el desempeño del tutor..."></textarea>'
     + '</div></div>';
   return html;
 }
@@ -1246,13 +1304,12 @@ function closeEvalModal() {
 
 async function saveEvaluation() {
   if(!currentTutorData) return;
-  var dims = ['etica','liderazgo','solidaridad','sostenibilidad'];
-  for(var i=0;i<dims.length;i++){
-    if(!evalScores[dims[i]]){
-      document.getElementById('eval-save-status').style.color='#dc2626';
-      document.getElementById('eval-save-status').textContent='Califica todas las dimensiones (1-5 estrellas).';
-      return;
-    }
+  var dims = ['etica','liderazgo','solidaridad','sostenibilidad','contenido','metodologia','gestion','inclusion','planificacion'];
+  var missing = dims.filter(function(d){ return !evalScores[d]; });
+  if(missing.length){
+    document.getElementById('eval-save-status').style.color='#dc2626';
+    document.getElementById('eval-save-status').textContent='Califica todas las dimensiones (' + missing.length + ' pendientes).';
+    return;
   }
   var payload = {
     tutor_nombre: currentTutorData.nombre,
@@ -1262,6 +1319,11 @@ async function saveEvaluation() {
     liderazgo_score: evalScores.liderazgo,
     solidaridad_score: evalScores.solidaridad,
     sostenibilidad_score: evalScores.sostenibilidad,
+    contenido_score: evalScores.contenido,
+    metodologia_score: evalScores.metodologia,
+    gestion_score: evalScores.gestion,
+    inclusion_score: evalScores.inclusion,
+    planificacion_score: evalScores.planificacion,
     comentarios: (document.getElementById('eval-comentarios')||{}).value || null
   };
   var st = document.getElementById('eval-save-status');
