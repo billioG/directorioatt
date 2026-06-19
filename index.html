@@ -27,8 +27,10 @@
 .btn-admin-exit:hover{background:rgba(255,255,255,.35)}
 .btn-admin-export{background:#fff;color:#1a5c1a;border:none;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:12px;font-weight:700}
 .btn-admin-export:hover{background:#e8f5e9}
-.btn-edit-card{display:none;position:absolute;top:8px;right:8px;background:#2C7A2C;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:600;z-index:10}
-body.admin-mode .btn-edit-card{display:flex;align-items:center;gap:4px}
+.btn-edit-card{display:none}
+.btn-edit-detail{display:none;background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:10px;padding:8px 14px;cursor:pointer;font-size:13px;font-weight:600;align-items:center;gap:6px;transition:background .15s;flex-shrink:0}
+.btn-edit-detail:hover{background:rgba(255,255,255,.3)}
+body.admin-mode .btn-edit-detail{display:flex}
 body.admin-mode .dir-card{position:relative}
 body.admin-mode #admin-bar{margin-top:0}
 body.admin-mode #screen-dir{padding-top:44px}
@@ -363,6 +365,7 @@ body.admin-mode #screen-dir{padding-top:44px}
       <h2 id="dh-nombre"></h2>
       <p id="dh-meta"></p>
     </div>
+    <button class="btn-edit-detail" id="btn-edit-detail" onclick="openEditModal(currentDetailId)"><i class="ti ti-pencil" style="font-size:15px"></i> Editar</button>
   </div>
   <div class="detail-body">
 
@@ -610,7 +613,7 @@ function renderDirectory(){
       </div>
       <div class="dir-badges"><span class="dir-badge ${SECTOR_CLASSES[d.sector]||'badge-otro'}">${d.sector}</span></div>
       <i class="ti ti-chevron-right" style="font-size:16px;color:var(--text-muted);flex-shrink:0"></i>
-    </div></div><button class="btn-edit-card" onclick="event.stopPropagation();openEditModal(${d.id})"><i class="ti ti-pencil" style="font-size:12px"></i> Editar</button></div>`;
+    </div></div></div>`;
   });
   if(!visible)html='<div class="empty-state"><i class="ti ti-search-off"></i><div>No se encontraron establecimientos</div></div>';
   document.getElementById('dirList').innerHTML=html;
@@ -620,7 +623,7 @@ function renderDirectory(){
 }
 
 function openDetail(id){
-  const d=DATA.find(x=>x.id===id);if(!d)return;currentData=d;
+  const d=DATA.find(x=>x.id===id);if(!d)return;currentData=d;currentDetailId=id;
   document.getElementById('dh-nombre').textContent=d.nombre;
   document.getElementById('dh-meta').textContent=`${d.tipo} · ${d.munLabel} · Sector ${d.sector}`;
 
