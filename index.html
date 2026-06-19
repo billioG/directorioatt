@@ -324,7 +324,7 @@ body.admin-mode #screen-dir{padding-top:44px}
       <div class="header-stats">
         <div class="hstat"><div class="hstat-val" id="hs-total">—</div><div class="hstat-lbl">Establecimientos</div></div>
         <div class="hstat"><div class="hstat-val" id="hs-est">—</div><div class="hstat-lbl">Estudiantes</div></div>
-        <div class="hstat"><div class="hstat-val" id="hs-tutores">—</div><div class="hstat-lbl">Tutores</div></div><button id="btn-admin-login" onclick="openLoginModal()" title="Acceso administrador"><i class="ti ti-lock" style="font-size:14px"></i></button>
+        <div class="hstat"><div class="hstat-val" id="hs-tutores">—</div><div class="hstat-lbl">Tutores</div></div><button id="btn-admin-login" onclick="openLoginModal()" title="Modo edición · Acceso administrador"><i class="ti ti-lock" style="font-size:14px"></i><span style="font-size:10px;margin-left:2px">Admin</span></button>
       </div>
     </div>
   </header>
@@ -478,6 +478,9 @@ function mapRow(row) {
     justificacion: row.justificacion,
     sugerencias: row.sugerencias,
     observaciones: row.observaciones,
+    apoyoDir: row.apoyo_dir !== undefined ? row.apoyo_dir : null,
+    apoyoDoc: row.apoyo_doc !== undefined ? row.apoyo_doc : null,
+    apoyoEst: row.apoyo_est !== undefined ? row.apoyo_est : null,
     tutores: (row.tutores || []).sort(function(a,b){ return (a.orden||0)-(b.orden||0); }).map(function(t){
       return { nombre: t.nombre, tel: t.tel, email: t.email };
     }),
@@ -648,7 +651,7 @@ function openDetail(id){
   }
   document.getElementById('ci-tutores-container').innerHTML=tutHtml;
   const iLabCls=d.labComp==='SI'?'infra-si':d.labComp==='NO'?'infra-no':'infra-lim';
-  document.getElementById('ci-infra').innerHTML=d.labComp?`<span class="infra-pill ${iLabCls}"><i class="ti ${d.labComp==='SI'?'ti-check':'ti-x'}"></i>Lab. Cómputo: ${d.labComp}</span>`:'';  function setBar(id,sid,v){const c=v>=9?'bar-hi':v>=7?'bar-mid':'bar-lo';document.getElementById(id).style.width=(v===null?50:(v/10)*100)+'%';document.getElementById(id).className='bar-fill '+c;document.getElementById(sid).textContent=v===null?'N/D':v+'/10';}
+  document.getElementById('ci-infra').innerHTML=d.labComp?`<span class="infra-pill ${iLabCls}"><i class="ti ${d.labComp==='SI'?'ti-check':'ti-x'}"></i>Lab. Cómputo: ${d.labComp}</span>`:'';  function setBar(id,sid,v){const safe=(v===null||v===undefined)?null:Number(v);const c=safe>=9?'bar-hi':safe>=7?'bar-mid':'bar-lo';document.getElementById(id).style.width=(safe===null?50:(safe/10)*100)+'%';document.getElementById(id).className='bar-fill '+(safe===null?'bar-lo':c);document.getElementById(sid).textContent=safe===null?'N/D':safe+'/10';}
   setBar('ab-dir','as-dir',d.apoyoDir);setBar('ab-doc','as-doc',d.apoyoDoc);setBar('ab-est','as-est',d.apoyoEst);
   let mapHtml='';
   if(d.lat&&d.lng){const osmUrl=`https://www.openstreetmap.org/export/embed.html?bbox=${d.lng-0.01}%2C${d.lat-0.008}%2C${d.lng+0.01}%2C${d.lat+0.008}&layer=mapnik&marker=${d.lat}%2C${d.lng}`;mapHtml=`<div class="map-wrap"><iframe src="${osmUrl}" loading="lazy" title="Mapa"></iframe></div>`;}
