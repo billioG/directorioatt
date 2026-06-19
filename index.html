@@ -34,6 +34,7 @@ body.admin-mode .btn-edit-detail{display:flex}
 body.admin-mode .dir-card{position:relative}
 body.admin-mode #admin-bar{margin-top:0}
 body.admin-mode #screen-dir{padding-top:44px}
+body.admin-mode .detail-header{top:44px}
 #edit-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto}
 #edit-modal.open{display:flex}
 .edit-inner{background:#fff;border-radius:14px;width:100%;max-width:620px;overflow:hidden;margin:auto}
@@ -502,7 +503,8 @@ function localToSbRow(d) {
     docentes: d.docentes, muj_doc: d.mujDoc, hom_doc: d.homDoc,
     lab_comp: d.labComp, waze: d.waze, avatar: d.avatar, av_color: d.avColor,
     riesgos: d.riesgos, justificacion: d.justificacion,
-    sugerencias: d.sugerencias, observaciones: d.observaciones
+    sugerencias: d.sugerencias, observaciones: d.observaciones,
+    apoyo_dir: d.apoyoDir, apoyo_doc: d.apoyoDoc, apoyo_est: d.apoyoEst
   };
 }
 
@@ -789,6 +791,7 @@ function dismissIos(){
     </div>
     <div class="edit-body" id="edit-body"></div>
     <div class="edit-footer">
+      <span id="edit-save-status" style="font-size:12px;color:#2C7A2C;flex:1"></span>
       <button class="btn-cancel-edit" onclick="closeEditModal()">Cancelar</button>
       <button class="btn-save-edit" onclick="saveEdit()">Guardar cambios</button>
     </div>
@@ -843,22 +846,30 @@ function openEditModal(id) {
       +"</div></div>";
   }
 
+  function sel(label, name, val, opts) {
+    var options = opts.map(function(o){ return "<option value=\""+o+"\"" + (val===o?" selected":"") +">"+o+"</option>"; }).join("");
+    return "<div class=\"edit-field\"><label>"+label+"</label><select name=\""+name+"\">"+options+"</select></div>";
+  }
+
   document.getElementById("edit-body").innerHTML =
     "<div class=\"edit-section\"><div class=\"edit-section-title\">Identificacion</div>"
     +"<div class=\"edit-row\">"+fld("Nombre","nombre",d.nombre)+fld("Municipio","munLabel",d.munLabel)+"</div>"
     +"<div class=\"edit-row\">"+fld("Director/a","director",d.director)+fld("Telefono","tel",d.tel)+"</div>"
     +"<div class=\"edit-row full\">"+fld("Correo","correo",d.correo)+"</div>"
     +"<div class=\"edit-row full\">"+fld("Direccion","direccion",d.direccion)+"</div>"
-    +"<div class=\"edit-row\">"+fld("Distancia km","distancia",d.distancia,"number")+fld("Jornada","jornada",d.jornada)+"</div></div>"
+    +"<div class=\"edit-row\">"+fld("Distancia km","distancia",d.distancia,"number")+fld("Jornada","jornada",d.jornada)+"</div>"
+    +"<div class=\"edit-row\">"+sel("Lab. Computo","labComp",d.labComp,["","SI","NO"])+fld("Enlace Waze/Maps","waze",d.waze)+"</div></div>"
     +"<div class=\"edit-section\"><div class=\"edit-section-title\">Estudiantes</div>"
     +"<div class=\"edit-row\">"+fld("Total","estudiantes",d.estudiantes,"number")+fld("Mujeres","mujEst",d.mujEst,"number")+fld("Hombres","homEst",d.homEst,"number")+"</div></div>"
     +"<div class=\"edit-section\"><div class=\"edit-section-title\">Docentes</div>"
     +"<div class=\"edit-row\">"+fld("Total","docentes",d.docentes,"number")+fld("Mujeres","mujDoc",d.mujDoc,"number")+fld("Hombres","homDoc",d.homDoc,"number")+"</div></div>"
+    +"<div class=\"edit-section\"><div class=\"edit-section-title\">Apoyo institucional (0-10)</div>"
+    +"<div class=\"edit-row\">"+fld("Director/a","apoyoDir",d.apoyoDir,"number")+fld("Docentes","apoyoDoc",d.apoyoDoc,"number")+fld("Estudiantes","apoyoEst",d.apoyoEst,"number")+"</div></div>"
     +"<div class=\"edit-section\"><div class=\"edit-section-title\">Horario ATT</div>"
-    +"<div class=\"edit-row\">"+fld("Dias","horario_dias",h.dias)+fld("Horas por sesion","horario_horas",h.horas,"number")+"</div>"
-    +"<div class=\"edit-row\">"+fld("Hora inicio","horario_inicio",h.inicio)+fld("Hora fin","horario_fin",h.fin)+"</div>"
+    +"<div class=\"edit-row\">"+fld("Dias (ej: Lunes y Miercoles)","horario_dias",h.dias)+fld("Horas por sesion","horario_horas",h.horas,"number")+"</div>"
+    +"<div class=\"edit-row\">"+fld("Hora inicio (ej: 14:00)","horario_inicio",h.inicio)+fld("Hora fin (ej: 17:30)","horario_fin",h.fin)+"</div>"
     +"<div class=\"edit-row full\">"+fld("Demostracion","horario_demostracion",h.demostracion)+"</div></div>"
-    +"<div class=\"edit-section\"><div class=\"edit-section-title\">Tutores hasta 3</div>"+tutoresHTML+"</div>"
+    +"<div class=\"edit-section\"><div class=\"edit-section-title\">Tutores (hasta 3)</div>"+tutoresHTML+"</div>"
     +"<div class=\"edit-section\"><div class=\"edit-section-title\">Ficha tecnica</div>"
     +ta("Riesgos","riesgos",d.riesgos)
     +ta("Justificacion","justificacion",d.justificacion)
@@ -900,12 +911,17 @@ function saveEdit() {
   d.direccion     = gv(form,"direccion");
   d.distancia     = gn(form,"distancia");
   d.jornada       = gv(form,"jornada");
+  d.labComp       = gv(form,"labComp") || null;
+  d.waze          = gv(form,"waze");
   d.estudiantes   = gn(form,"estudiantes");
   d.mujEst        = gn(form,"mujEst");
   d.homEst        = gn(form,"homEst");
   d.docentes      = gn(form,"docentes");
   d.mujDoc        = gn(form,"mujDoc");
   d.homDoc        = gn(form,"homDoc");
+  d.apoyoDir      = gn(form,"apoyoDir");
+  d.apoyoDoc      = gn(form,"apoyoDoc");
+  d.apoyoEst      = gn(form,"apoyoEst");
   d.riesgos       = gv(form,"riesgos");
   d.justificacion = gv(form,"justificacion");
   d.sugerencias   = gv(form,"sugerencias");
@@ -927,8 +943,9 @@ function saveEdit() {
   d.tutores = tutores;
 
   if (adminMode && sbToken) {
-    var statusEl = document.getElementById("admin-save-status");
-    statusEl.textContent = "Guardando...";
+    var statusEl = document.getElementById("edit-save-status");
+    var barStatus = document.getElementById("admin-save-status");
+    if (statusEl) statusEl.textContent = "Guardando...";
     var estRow = localToSbRow(d);
     var tutRows = (d.tutores||[]).map(function(t,i){ return {establecimiento_id: editingId, orden: i, nombre: t.nombre, tel: t.tel, email: t.email}; });
     var horRow = Object.assign({establecimiento_id: editingId}, d.horario || {});
@@ -942,16 +959,20 @@ function saveEdit() {
       return Promise.all(ops);
     }).then(function() {
       localStorage.setItem(CACHE_KEY, JSON.stringify(DATA));
-      statusEl.textContent = "✓ Guardado";
-      setTimeout(function(){ statusEl.textContent = ""; }, 3000);
+      if (barStatus) barStatus.textContent = "✓ Guardado";
+      setTimeout(function(){ if(barStatus)barStatus.textContent=""; }, 3000);
+      closeEditModal();
+      renderDirectory();
+      if (document.getElementById("screen-detail").classList.contains("open")) openDetail(currentDetailId);
     }).catch(function(e) {
-      statusEl.textContent = "Error: " + e.message;
+      if (statusEl) { statusEl.style.color="#dc2626"; statusEl.textContent = "Error al guardar: " + e.message; }
     });
+    return;
   }
+  localStorage.setItem(CACHE_KEY, JSON.stringify(DATA));
   closeEditModal();
   renderDirectory();
-  var detail = document.getElementById("screen-detail");
-  if (detail && detail.style.display !== "none") showDetail(editingId);
+  if (document.getElementById("screen-detail").classList.contains("open")) openDetail(currentDetailId);
 }
 
 function logoutAdmin() {
