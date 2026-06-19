@@ -444,9 +444,11 @@ async function sbFetch(path, opts) {
   }, opts.headers || {});
   if (opts.body) headers["Content-Type"] = "application/json";
   var r = await fetch(SB_URL + path, Object.assign({}, opts, {headers: headers}));
-  if (!r.ok) { var t = await r.text(); throw new Error(t); }
-  if (r.status === 204) return null;
-  return r.json();
+  if (!r.ok) { var t = await r.text(); throw new Error(t || r.status); }
+  var len = r.headers.get("content-length");
+  if (r.status === 204 || len === "0") return null;
+  var text = await r.text();
+  return text ? JSON.parse(text) : null;
 }
 
 function mapRow(row) {
@@ -955,7 +957,7 @@ function saveEdit() {
     ]).then(function() {
       var ops = [];
       if (tutRows.length) ops.push(sbFetch("/rest/v1/tutores", {method:"POST", body: JSON.stringify(tutRows)}));
-      ops.push(sbFetch("/rest/v1/horarios", {method:"POST", headers:{"Prefer":"resolution=merge-duplicates"}, body: JSON.stringify(horRow)}));
+      ops.push(sbFetch("/rest/v1/horarios?on_conflict=establecimiento_id", {method:"POST", headers:{"Prefer":"resolution=merge-duplicates,return=minimal"}, body: JSON.stringify(horRow)}));
       return Promise.all(ops);
     }).then(function() {
       localStorage.setItem(CACHE_KEY, JSON.stringify(DATA));
